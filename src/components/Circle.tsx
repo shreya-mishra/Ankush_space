@@ -8,8 +8,21 @@ const Circle = ({ position }) => {
 
   //   // setPosition({ bottom: randomBottom, left: randomLeft });
   // }, []);
+  const circleSize = 50;
+  const circleOffset = 30;
 
-  return <View style={[styles.circle, position]}></View>;
+  return (
+    <View
+      style={[
+        styles.circle,
+        position,
+        {
+          top: position.top - circleSize / 2 - circleOffset,
+          left: position.left - circleSize / 2,
+        },
+      ]}
+    ></View>
+  );
 };
 
 export default Circle;

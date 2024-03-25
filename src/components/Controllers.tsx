@@ -7,10 +7,10 @@ const Controllers = ({ moveCircle }) => {
     <View style={styles.container}>
       {/* Top Control */}
       <TouchableOpacity
-        style={styles.topControl}
-        onPress={() => moveCircle("top")}
+        style={styles.bottomControl}
+        onPress={() => moveCircle("bottom")}
       >
-        <Text>Top Control</Text>
+        <Text>Top</Text>
       </TouchableOpacity>
 
       {/* Left Control */}
@@ -18,7 +18,7 @@ const Controllers = ({ moveCircle }) => {
         style={styles.leftControl}
         onPress={() => moveCircle("left")}
       >
-        <Text>Left Control</Text>
+        <Text>Left</Text>
       </TouchableOpacity>
 
       {/* Right Control */}
@@ -26,15 +26,15 @@ const Controllers = ({ moveCircle }) => {
         style={styles.rightControl}
         onPress={() => moveCircle("right")}
       >
-        <Text>Right Control</Text>
+        <Text>Right</Text>
       </TouchableOpacity>
 
       {/* Bottom Control */}
       <TouchableOpacity
-        style={styles.bottomControl}
-        onPress={() => moveCircle("bottom")}
+        style={styles.topControl}
+        onPress={() => moveCircle("top")}
       >
-        <Text>Bottom Control</Text>
+        <Text>Bottom</Text>
       </TouchableOpacity>
     </View>
   );
@@ -44,37 +44,53 @@ export default Controllers;
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    flex: 1,
-    justifyContent: "center",
-    marginTop: 80,
+    // position: "absolute",
+    // flex: 1,
+    // justifyContent: "center",
+    // marginTop: 80,
+    // height: "100%",
+    // width: "100%",
+    alignItems: "center",
   },
   topControl: {
     position: "absolute",
-    top: 10,
-    alignSelf: "center",
-  },
-  leftControl: {
-    position: "absolute",
-    left: 10,
-    alignSelf: "center",
+    top: 30,
+    borderWidth: 2,
+    borderColor: "blue",
+    height: 20,
+    width: 55,
+    display: "flex",
+    alignItems: "center",
   },
   rightControl: {
     position: "absolute",
+    left: 10,
+    borderWidth: 2,
+    borderColor: "blue",
+    height: 20,
+    width: 55,
+    display: "flex",
+    alignItems: "center",
+  },
+
+  leftControl: {
+    position: "absolute",
     right: 10,
-    alignSelf: "center",
+    borderWidth: 2,
+    borderColor: "blue",
+    height: 20,
+    width: 55,
+    display: "flex",
+    alignItems: "center",
   },
   bottomControl: {
     position: "absolute",
     bottom: 10,
-    alignSelf: "center",
-  },
-  centerButton: {
-    position: "absolute",
-    alignSelf: "center",
-    bottom: 10, // Adjusted bottom value
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: "blue",
+    height: 20,
+    width: 55,
+    display: "flex",
+    alignItems: "center",
   },
 });
