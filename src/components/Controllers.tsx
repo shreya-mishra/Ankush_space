@@ -1,40 +1,73 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { screenHt } from "../utils/helpers";
 
-const Controllers = ({ moveCircle }) => {
+type ControllersProps = {
+  moveCircle: (postion: string) => void;
+  disabledGoalButton: boolean;
+  statusOfButton: string;
+};
+const Controllers = ({
+  moveCircle,
+  disabledGoalButton,
+  statusOfButton,
+}: ControllersProps) => {
   return (
     <View style={styles.container}>
       {/* Top Control */}
-      <TouchableOpacity
-        style={styles.bottomControl}
-        onPress={() => moveCircle("bottom")}
-      >
-        <Text>Top</Text>
-      </TouchableOpacity>
 
+      <TouchableOpacity
+        style={[
+          styles.topControl,
+          {
+            backgroundColor: statusOfButton === "top" ? "#FFF786" : "#CECDCE",
+            borderColor: statusOfButton === "top" ? "#EFC187" : "",
+          },
+        ]}
+        onPress={() => !disabledGoalButton && moveCircle("top")}
+      >
+        <Text>⬆️</Text>
+      </TouchableOpacity>
       {/* Left Control */}
       <TouchableOpacity
-        style={styles.leftControl}
-        onPress={() => moveCircle("left")}
+        style={[
+          styles.leftControl,
+          {
+            backgroundColor: statusOfButton === "left" ? "#FFF786" : "#CECDCE",
+            borderColor: statusOfButton === "left" ? "#EFC187" : "",
+          },
+        ]}
+        onPress={() => !disabledGoalButton && moveCircle("left")}
       >
-        <Text>Left</Text>
+        <Text>⬅️</Text>
       </TouchableOpacity>
 
       {/* Right Control */}
       <TouchableOpacity
-        style={styles.rightControl}
-        onPress={() => moveCircle("right")}
+        style={[
+          styles.rightControl,
+          {
+            backgroundColor: statusOfButton === "right" ? "#FFF786" : "#CECDCE",
+            borderColor: statusOfButton === "right" ? "#EFC187" : "",
+          },
+        ]}
+        onPress={() => !disabledGoalButton && moveCircle("right")}
       >
-        <Text>Right</Text>
+        <Text>➡️</Text>
       </TouchableOpacity>
 
       {/* Bottom Control */}
       <TouchableOpacity
-        style={styles.topControl}
-        onPress={() => moveCircle("top")}
+        style={[
+          styles.bottomControl,
+          {
+            backgroundColor:
+              statusOfButton === "bottom" ? "#FFF786" : "#CECDCE",
+            borderColor: statusOfButton === "bottom" ? "#EFC187" : "",
+          },
+        ]}
+        onPress={() => !disabledGoalButton && moveCircle("bottom")}
       >
-        <Text>Bottom</Text>
+        <Text>⬇️</Text>
       </TouchableOpacity>
     </View>
   );
@@ -44,53 +77,51 @@ export default Controllers;
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // flex: 1,
-    // justifyContent: "center",
-    // marginTop: 80,
-    // height: "100%",
-    // width: "100%",
     alignItems: "center",
   },
-  topControl: {
+  bottomControl: {
     position: "absolute",
     top: 30,
     borderWidth: 2,
-    borderColor: "blue",
-    height: 20,
+    borderColor: "black",
+    height: 25,
     width: 55,
     display: "flex",
     alignItems: "center",
+    backgroundColor: "#CECDCE",
   },
   rightControl: {
     position: "absolute",
     left: 10,
     borderWidth: 2,
-    borderColor: "blue",
-    height: 20,
+    borderColor: "black",
+    height: 25,
     width: 55,
     display: "flex",
     alignItems: "center",
+    backgroundColor: "#CECDCE",
   },
 
   leftControl: {
     position: "absolute",
     right: 10,
     borderWidth: 2,
-    borderColor: "blue",
-    height: 20,
+    borderColor: "black",
+    height: 25,
     width: 55,
     display: "flex",
     alignItems: "center",
+    backgroundColor: "#CECDCE",
   },
-  bottomControl: {
+  topControl: {
     position: "absolute",
     bottom: 10,
     borderWidth: 2,
-    borderColor: "blue",
-    height: 20,
+    borderColor: "black",
+    height: 25,
     width: 55,
     display: "flex",
     alignItems: "center",
+    backgroundColor: "#CECDCE",
   },
 });

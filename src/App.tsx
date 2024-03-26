@@ -1,228 +1,156 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Controllers from "./components/Controllers";
-import Target from "./components/Goal";
-import Circle from "./components/Circle";
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, StyleSheet, View, Dimensions, Text } from "react-native";
+import GamePlayGround from "./components/GamePlayground";
 
 export default function App() {
-  const [circlePositions, setCirclePositions] = useState([
-    { top: 0, left: 0 },
-    { top: 0, left: 0 },
-    { top: 0, left: 0 },
+  const { width, height } = Dimensions.get("window");
+  console.log("width", width - 40);
+  const maxHeight = height * 0.23;
+  const [initialBallsPosition, setInitialBallPosition] = useState([
+    {
+      id: 1,
+      top: 0,
+      left: 0,
+    },
+    {
+      id: 2,
+      top: 0,
+      left: 0,
+    },
+    {
+      id: 3,
+      top: 0,
+      left: 0,
+    },
   ]);
-  const [targetReached, setTargetReached] = useState(false);
 
-  const moveCircle = (index, direction) => {
-    console.log("circlePositions>>>>>>", circlePositions);
-    const newPositions = [...circlePositions];
-    let newPosition = newPositions[index];
-
-    switch (direction) {
-      case "top":
-        newPosition.top += 10;
-        break;
-      case "left":
-        newPosition.left -= 10;
-        break;
-      case "right":
-        newPosition.left += 10;
-        break;
-      case "bottom":
-        newPosition.top -= 10;
-        break;
+  const moveBallToParticularPos = (
+    position: string,
+    playgroundBallId: number
+  ) => {
+    const findParticularItem = initialBallsPosition.find(
+      (item) => item.id === playgroundBallId
+    );
+    if (position === "left") {
+      if (findParticularItem?.left === 0) {
+        return;
+      }
+      setInitialBallPosition((prev) =>
+        prev.map((item) =>
+          item.id === playgroundBallId
+            ? {
+                ...item,
+                left: item.left - 10,
+              }
+            : item
+        )
+      );
+      return;
     }
-
-    // Update the corresponding circle position
-    newPositions[index] = newPosition;
-
-    // left = 0 ------ 30;
-    // top = 40;
-    //index  ========> index , top button press
-
-    // left = -40 to - 10 and top === 70 . button press LEFT
-
-    // left = 0 ----30 and top === 100 button pressBOTTOM
-
-    // right = 40 ----- 60 and top === 70 button press RIGHT
-
-    // if (newPosition.top >= 0 && newPosition.top <= 10) {
-    //   //TODO: container : index , buttonIndex : 0,1,2,3
-    //   console.log("LOGSSS", direction, index);
-    //   onTopReached(index);
-    // }
-
-    if (
-      newPosition.top === 40 &&
-      newPosition.left >= 0 &&
-      newPosition.left <= 30
-    ) {
-      setCirclePositions([
-        { top: newPosition.top, left: newPosition.left },
-        { top: 0, left: 0 },
-        { top: 0, left: 0 },
-      ]);
-      setInterval(() => {
-        moveCircle(index + 1, "top");
-      }, 5000);
-    } else if (
-      newPosition.top === 100 &&
-      newPosition.left >= 0 &&
-      newPosition.left <= 30
-    ) {
-      setCirclePositions([
-        { top: newPosition.top, left: newPosition.left },
-        { top: 0, left: 0 },
-        { top: 0, left: 0 },
-      ]);
-      moveCircle(index + 1, "bottom");
-    } else if (
-      newPosition.top === 70 &&
-      newPosition.left >= -40 &&
-      newPosition.left <= -10
-    ) {
-      moveCircle(index + 1, "left");
-    } else if (
-      newPosition.top === 70 &&
-      newPosition.left >= 40 &&
-      newPosition.left <= 60
-    ) {
-      moveCircle(index + 1, "right");
-    } else {
-      console.log("outside the box");
+    if (position === "right") {
+      if (findParticularItem.left >= width - 40) {
+        return;
+      }
+      setInitialBallPosition((prev) =>
+        prev.map((item) =>
+          item.id === playgroundBallId
+            ? {
+                ...item,
+                left: item.left + 10,
+              }
+            : item
+        )
+      );
+      return;
     }
-    newPositions[index] = newPosition;
-
-    // setTargetReached(targetReached); // TODO:
-    setCirclePositions(newPositions);
+    if (position === "top") {
+      if (findParticularItem?.top === 0) {
+        return;
+      }
+      setInitialBallPosition((prev) =>
+        prev.map((item) =>
+          item.id === playgroundBallId
+            ? {
+                ...item,
+                top: item.top - 10,
+              }
+            : item
+        )
+      );
+      return;
+    }
+    if (position === "bottom") {
+      if (findParticularItem.top >= maxHeight - 40) {
+        return;
+      }
+      setInitialBallPosition((prev) =>
+        prev.map((item) =>
+          item.id === playgroundBallId
+            ? {
+                ...item,
+                top: item.top + 10,
+              }
+            : item
+        )
+      );
+      return;
+    }
   };
-  // const moveCircle = (index, direction) => {
-  //   const newPositions = [...circlePositions];
-  //   // let newPosition = { ...newPositions[index] };
-  //   let targetBox = {
-  //     bottom: 20,
-  //     top: 0,
-  //     left: 0,
-  //     right: 0,
-  //     width: "100%",
-  //   };
-
-  //   switch (direction) {
-  //     case "top":
-  //       newPosition.top += 10;
-  //       break;
-  //     case "left":
-  //       newPosition.left -= 10;
-  //       break;
-  //     case "right":
-  //       newPosition.left += 10;
-  //       break;
-  //     case "bottom":
-  //       newPosition.top -= 10;
-  //       break;
-  //   }
-
-  //   newPositions[index] = newPosition;
-
-  //   if (
-  //     newPosition.left >= targetBox.left &&
-  //     newPosition.left <= targetBox.width + targetBox.left &&
-  //     newPosition.top >= targetBox.top &&
-  //     newPosition.top <= targetBox.width * targetBox.top
-
-  //     // newPosition.left === targetBox.right &&
-  //     // newPosition.bottom === targetBox.bottom
-  //   ) {
-  //     console.log("target Reached >>>>>>>>>>>>>", newPosition);
-  //     setTargetReached(true);
-  //   } else {
-  //     console.log("Target not reached. newPosition:", newPosition);
-  //     console.log("targetBox:", targetBox);
-  //   }
-
-  //   setCirclePosition(newPosition);
-  // };
 
   return (
-    <>
-      <Text>Strike the Target</Text>
-      <View style={styles.container}>
-        <View style={styles.gameContainer}>
-          <View style={styles.playground}>
-            <Target targetReached={targetReached} />
-            <Circle position={circlePositions[2]} />
-          </View>
-        </View>
-
-        <View style={styles.gameContainer}>
-          <View style={styles.playground}>
-            {/* <Target targetReached={targetReached} /> */}
-            <Circle position={circlePositions[1]} />
-          </View>
-
-          <View style={styles.controller}>
-            <Controllers moveCircle={(direction) => moveCircle(2, direction)} />
-          </View>
-        </View>
-
-        <View style={styles.gameContainer}>
-          <View style={styles.playground}>
-            {/* <Target targetReached={targetReached} /> */}
-            <Circle position={circlePositions[0]} />
-          </View>
-
-          <View style={styles.controller}>
-            <Controllers
-              moveCircle={(direction) => {
-                moveCircle(1, direction);
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={styles.controller}>
-          <Controllers
-            moveCircle={(direction) => {
-              moveCircle(0, direction);
-            }}
-          />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <GamePlayGround
+          targetShow
+          controllerHide={true}
+          bgColor={"white"}
+          ballColor={"green"}
+          ballPosition={initialBallsPosition[0]}
+          border={true}
+        />
+        <GamePlayGround
+          disabledGoalButton={true}
+          moveBallToParticularPos={(position) =>
+            moveBallToParticularPos(position, initialBallsPosition[0].id)
+          }
+          bgColor={"white"}
+          ballColor={"green"}
+          ballPosition={initialBallsPosition[1]}
+          border={true}
+        />
+        <GamePlayGround
+          disabledGoalButton={true}
+          moveBallToParticularPos={(position) =>
+            moveBallToParticularPos(position, initialBallsPosition[1].id)
+          }
+          bgColor={"white"}
+          ballColor={"green"}
+          ballPosition={initialBallsPosition[2]}
+          border={true}
+        />
+        <GamePlayGround
+          moveBallToParticularPos={(position) =>
+            moveBallToParticularPos(position, initialBallsPosition[2].id)
+          }
+          bgColor={"white"}
+          border={false}
+        />
       </View>
-    </>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  playground: {
-    // flex: 1,
-    alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "yellow",
+    backgroundColor: "#ecf0f1",
+    padding: 8,
   },
-  gameContainer: {
-    height: "25%",
-
-    // flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    margin: 2,
-  },
-  controller: {
-    alignItems: "center",
-    justifyContent: "center",
-    // borderWidth: 2,
-    height: 100,
-    // width: 100,
-    // borderColor: "blue",
-    // backgroundColor: "red",
-    alignSelf: "center",
-    position: "absolute",
-    bottom: 20,
-    left: 0,
-    right: 0,
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

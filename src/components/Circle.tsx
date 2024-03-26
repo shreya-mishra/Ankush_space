@@ -1,27 +1,31 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import { BallPositionType } from "./GamePlayground";
 
-const Circle = ({ position }) => {
-  // useEffect(() => {
-  //   const randomBottom = Math.floor(Math.random() * (500 - 25)) + 25;
-  //   const randomLeft = Math.floor(Math.random() * (300 - 25)) + 25;
-
-  //   // setPosition({ bottom: randomBottom, left: randomLeft });
-  // }, []);
+type CircleProps = {
+  ballPosition: BallPositionType;
+  ballColor: string;
+};
+const Circle = ({ ballPosition, ballColor }: CircleProps) => {
   const circleSize = 50;
   const circleOffset = 30;
 
   return (
     <View
-      style={[
-        styles.circle,
-        position,
-        {
-          top: position.top - circleSize / 2 - circleOffset,
-          left: position.left - circleSize / 2,
-        },
-      ]}
-    ></View>
+      style={{
+        position: "absolute",
+        top: ballPosition.top,
+        left: ballPosition.left,
+      }}
+    >
+      <View
+        style={[
+          styles.circle,
+          // position,
+          { backgroundColor: ballColor },
+        ]}
+      ></View>
+    </View>
   );
 };
 
@@ -31,8 +35,7 @@ const styles = StyleSheet.create({
   circle: {
     height: 25,
     width: 25,
-    backgroundColor: "red",
-    position: "absolute",
+    // position: "absolute",
     borderRadius: 100,
   },
 });
